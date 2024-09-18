@@ -1,16 +1,9 @@
-# dipmachine
+# DipMachine
 
-A new Flutter project.
+This is the repository for the app that will connect with the:[DipMachine](https://github.com/Aaryanjadhav11/Dip-Machine-V1)
 
-## Getting Started
+Use [dummy_server](https://github.com/UtkarshJagtap/dipmachin_app/tree/main/dummy_server) to test it without the DipMachine
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

@@ -10,8 +10,12 @@ class WebsocketService {
 
   Future<void>  start() async {
     try {
+      //TODO:change the uri with ws://DipMachine.local/ws when connecting with actual machine.
      //channel = WebSocketChannel.connect(Uri.parse('ws://DipMachine.local/ws'));
+
+      //TODO: while using dummy server, use local ip of the machine hosting the dummy server
     channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.2:8000/ws'));
+
       await channel!.ready.then((_){
         developer.log('WebSocketService: connected to socket');
         established = true;
