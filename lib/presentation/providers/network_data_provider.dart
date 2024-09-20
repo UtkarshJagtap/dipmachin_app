@@ -21,20 +21,24 @@ class NetworkDataProvider extends ChangeNotifier{
 
   void listenStream() async {
     
-    List<ConnectivityResult> result = await Connectivity().checkConnectivity();
+    // List<ConnectivityResult> result = await Connectivity().checkConnectivity();
 
-    if(result.contains(ConnectivityResult.wifi)){
+    // if(result.contains(ConnectivityResult.wifi)){
 
-      connected = true;
+    //   connected = true;
+    
+    //   developer.log('NetworkDataProvider: has created initial state as (true) connected to wifi $result');
 
-      developer.log('NetworkDataProvider: has created initial state as (true) connected to wifi $result');
+    //   notifyListeners();
 
-    }else{
+    // }else{
 
-      connected = false;
+    //   connected = false;
 
-      developer.log('NetworkDataProvider: has created initial state as (false) not connected to wifi');
-    }
+    //   developer.log('NetworkDataProvider: has created initial state as (false) not connected to wifi');
+
+    //   notifyListeners();
+    // }
 
     stream = networkDataService.stream.listen((result) {
 

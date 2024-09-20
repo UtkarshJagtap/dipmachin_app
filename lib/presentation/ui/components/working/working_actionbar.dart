@@ -45,7 +45,7 @@ class WorkingActionbar extends StatelessWidget {
                 case WorkingActionbarStates.abort:
                   return const WorkingABAbort();
                 case WorkingActionbarStates.onesec:
-                  return const WorkingABWork();
+                  return const WorkingABOneSec();
               }
             },
           )),
@@ -78,7 +78,7 @@ class WorkingActionbarStateProvider extends ChangeNotifier {
       case WorkingActionbarStates.abort:
         return 160;
       case WorkingActionbarStates.onesec:
-        return 120;
+        return 100;
     }
   }
 }
@@ -302,7 +302,7 @@ class WorkingABAbort2 extends StatelessWidget {
             top: 8,
             child: Padding(
               padding: const EdgeInsets.only( left: 12.0),
-              child: Text('Are you sure you want to abort the \ncurrent experiment?', 
+              child: Text('Are you sure you want to abort \nthe ncurrent experiment?', 
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(color:Colors.white),),
             ),
           ),
@@ -334,7 +334,7 @@ class WorkingABAbort2 extends StatelessWidget {
                     onPressed: () {
                      context
                           .read<WorkingActionbarStateProvider>()
-                          .changeTo(WorkingActionbarStates.working);
+                          .changeTo(WorkingActionbarStates.onesec);
       
                       Map<String, dynamic> temp = {"state": "abort"};
                       String data = jsonEncode(temp);
@@ -365,5 +365,51 @@ class WorkingABAbort2 extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+
+class WorkingABOneSec extends StatelessWidget {
+  const WorkingABOneSec ({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+      Align(
+        alignment: Alignment.topRight,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            height: 6,
+            width: 6,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green,
+              boxShadow: [
+                BoxShadow(
+                 color: Colors.green.shade400,
+                 offset: const Offset(0, 0),
+                 blurRadius: 4,
+                 spreadRadius: 2,
+                 blurStyle: BlurStyle.normal,
+                )],
+              ),
+            ),
+          ),
+        ),
+    
+        
+        Align(
+          alignment: Alignment.center,
+          child: Text('Aborting',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .copyWith(color: Colors.white)),
+        ),
+      ],
+    );
+
   }
 }

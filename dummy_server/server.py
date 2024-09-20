@@ -5,6 +5,18 @@ from enum import Enum
 import socket
 import threading
 import random
+from zeroconf.asyncio import AsyncZeroconf
+from zeroconf import ServiceInfo
+
+def get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+        return local_ip
+    except Exception:
+        return "127.0.0.1"  # Fallback to localhost if unable to determine IP
 
 class State(Enum):
     WORKING = "WORKING"
@@ -18,7 +30,7 @@ class DipMachine:
         self.state = State.IDLE
         self.clients = set()
         self.lock = asyncio.Lock()
-        self.dip_task = None\
+        self.dip_task = None
         
         self.attempts = random.randint(1,5)
         self.i = 0
@@ -28,7 +40,7 @@ class DipMachine:
             "timeLeft": 0,
             "onBeaker": 1,
             "onCycle": 1,
-            "error": "Sensor thik se laga BKL!",
+            "error": "Check Sensors: 1, 2, 3",
             "currentTemp": [1] * 6,
             "setCycles": 1,
             "activeBeakers": 1,
@@ -120,7 +132,7 @@ class DipMachine:
             self.msg["currentTemp"] = data["setDipTemperature"][:data["activeBeakers"]]
             self.msg["setDipTemperature"] = data["setDipTemperature"][:data["activeBeakers"]]
             self.msg["setDipRPM"] = data["setDipRPM"][:data["activeBeakers"]]
-        except :
+        except:
             print('maybe recovering')
 
     async def dip_machine_operation(self, cycles, beakers):
@@ -136,7 +148,7 @@ class DipMachine:
                         break
                     self.msg["currentTemp"] = [round(random.uniform(25.00, 100.00), 2) for _ in range(beakers)]
                     await asyncio.sleep(3)  # Simulating operation time
-                    self.msg["onBeaker"] = i
+                    self.msg["onBeaker"] = i-1
                     if self.msg["timeLeft"] > 0:
                         self.msg["timeLeft"] -= 3
                     print(f"\n[dip_machine_operation] Data broadcasted: {self.msg}")
@@ -155,13 +167,14 @@ class DipMachine:
             await asyncio.sleep(5)
             await self.set_state(State.IDLE)
 
-def change_state_input(dip_machine, loop):
+async def change_state_input(dip_machine):
     while True:
+        new_state = await asyncio.to_thread(input, "Enter new state ([1] WORKING [2] IDLE [3] POWERLOSS [4] DONE [5] HALT): ")
         try:
-            new_state = int(input("Enter new state ([1] WORKING [2] IDLE [3] POWERLOSS [4] DONE [5] HALT): "))
+            new_state = int(new_state)
             states = [State.WORKING, State.IDLE, State.POWERLOSS, State.DONE, State.HALT]
             if 1 <= new_state <= 5:
-                asyncio.run_coroutine_threadsafe(dip_machine.set_state(states[new_state - 1]), loop)
+                await dip_machine.set_state(states[new_state - 1])
             else:
                 print("Invalid state number. Please try again.")
         except ValueError:
@@ -169,18 +182,36 @@ def change_state_input(dip_machine, loop):
 
 async def main():
     dip_machine = DipMachine()
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
+    local_ip = get_local_ip()
+    port = 8000
+
+    # Set up AsyncZeroconf
+    azc = AsyncZeroconf()
+    service_info = ServiceInfo(
+        "_http._tcp.local.",
+        "dipmachine._http._tcp.local.",
+        addresses=[socket.inet_aton(local_ip)],
+        port=port,
+        properties={'path': '/ws'}
+    )
+    await azc.async_register_service(service_info)
+
     server = await websockets.serve(
         dip_machine.handle_websocket,
         "0.0.0.0",
-        8000,
+        port,
         process_request=lambda path, _: None if path == '/ws' else (404, [], b'404 Not Found')
     )
-    print(f"WebSocket server started on ws://{local_ip}:8000/ws")
-    loop = asyncio.get_running_loop()
-    threading.Thread(target=change_state_input, args=(dip_machine, loop), daemon=True).start()
-    await server.wait_closed()
+    print(f"WebSocket server started on ws://{local_ip}:{port}/ws")
+    print(f"mDNS service registered as 'dipmachine.local'")
+    
+    input_task = asyncio.create_task(change_state_input(dip_machine))
+    
+    try:
+        await asyncio.gather(server.wait_closed(), input_task)
+    finally:
+        await azc.async_unregister_service(service_info)
+        await azc.async_close()
 
 if __name__ == "__main__":
  

@@ -10,11 +10,12 @@ class WebsocketService {
 
   Future<void>  start() async {
     try {
-      //TODO:change the uri with ws://DipMachine.local/ws when connecting with actual machine.
-     //channel = WebSocketChannel.connect(Uri.parse('ws://DipMachine.local/ws'));
+    
+    //TODO:change the uri with ws://DipMachine.local/ws when connecting with actual machine.
+    channel = WebSocketChannel.connect(Uri.parse('ws://dipmachine._http._tcp.local:8000/ws'));
 
-      //TODO: while using dummy server, use local ip of the machine hosting the dummy server
-    channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.2:8000/ws'));
+    //TODO: while using dummy server, use local ip of the machine hosting the dummy server
+    //channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.2:8000/ws'));
 
       await channel!.ready.then((_){
         developer.log('WebSocketService: connected to socket');
@@ -31,7 +32,7 @@ class WebsocketService {
 
   Future<void> retry() async {
     WebSocketChannelException ex = WebSocketChannelException();
-    while(attempts<5 && established != true){
+    while(attempts<10 && established != true){
       developer.log('WebsocketService: we are attempting to reconnect attempt no: $attempts');
       await Future.delayed(const Duration(seconds: 3));
       await start().onError((e, s){

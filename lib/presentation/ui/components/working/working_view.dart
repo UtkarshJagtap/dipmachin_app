@@ -63,7 +63,7 @@ class WorkingViewListCard extends StatelessWidget {
               ),
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
-              child: Text('${context.select<MachineDataProvider, double>((value)=>value.beakerTemp(index))} °C',
+              child: Text('${context.select<MachineDataProvider, double>((value)=>value.beakerTemp(index)).toStringAsFixed(2)} °C',
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Colors.black),
                 ),
               ), 

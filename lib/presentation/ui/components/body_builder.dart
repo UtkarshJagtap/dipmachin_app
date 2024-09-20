@@ -16,7 +16,10 @@ class BodyBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 400),
+        transitionBuilder: (Widget child, Animation<double> animation){
+          return ScaleTransition(scale: animation,child: child,);
+        },
         child: switch (mstate) {
           MachineStates.halt => const HaltView(),
           MachineStates.initial => const InitialView(),

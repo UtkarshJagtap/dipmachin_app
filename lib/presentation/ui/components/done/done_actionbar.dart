@@ -6,7 +6,7 @@ class DoneActionbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
+      height: 160,
       decoration: BoxDecoration(
           color: Colors.black,
           border: Border.all(

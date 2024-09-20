@@ -16,7 +16,7 @@ class ActionbarBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 400),
+      duration: const Duration(milliseconds: 200),
       child: switch(machineStates) {
         MachineStates.halt => const HaltActionbar(),
         MachineStates.initial => const InitialActionbar(),

@@ -210,7 +210,7 @@ class MachineDataProvider extends ChangeNotifier implements MachineData {
       }
       
 
-      beakers[newData['onBeaker']-1].isActive = true;
+      beakers[newData['onBeaker']].isActive = true;
       for(int i =0; i< numberOfBeakers; i++){
         developer.log(' beaker $i isActive : ${beakers[i].isActive}');
       }

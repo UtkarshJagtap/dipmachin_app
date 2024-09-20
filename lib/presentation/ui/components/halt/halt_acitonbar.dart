@@ -73,40 +73,50 @@ class HaltAB1 extends StatelessWidget {
       ),
     
         Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.all( 24.0),
-            child: Text('Recheck the sensors?',
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),),
-          ),
-        ),
-       Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only( right: 8.0),
-            child: TextButton(
-              onPressed: (){
-                 Map<String, dynamic> temp = {"state": "recheck"};
-                 String data = jsonEncode(temp);
-                 context.read<MachineDataProvider>().changeHaltRecheck(false);
-                 context.read<WebsocketDataProvider>().sendDataToWebscocket(data);
-              },
-              child: Container(
-                
-                decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(
-                    color: Colors.green.shade400,
-                    )
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+          
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Recheck the sensors?',
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),),
+              ),
+          
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  onPressed: () {
+                    Map<String, dynamic> temp = {"state": "recheck"};
+                    String data = jsonEncode(temp);
+                    context.read<MachineDataProvider>().changeHaltRecheck(false);
+                    context
+                        .read<WebsocketDataProvider>()
+                        .sendDataToWebscocket(data);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        border: Border.all(
+                          color: Colors.green.shade400,
+                        )),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        'Recheck',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: Colors.white),
+                      ),
+                    ),
                   ),
-                child: Padding(
-                  padding: const EdgeInsets.all( 12.0),
-                  child: Text('Recheck',
-                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),),
                 ),
               ),
-            ),
+          
+            ],
           ),
         ),
       ],
