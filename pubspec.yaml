@@ -39,6 +39,8 @@ dependencies:
   web_socket_channel: ^3.0.1
   connectivity_plus: ^6.0.5
   flutter_hooks: ^0.20.5
+  multicast_dns: ^0.3.2+7
+  flutter_nsd: ^1.5.0
 
 dev_dependencies:
   flutter_test:

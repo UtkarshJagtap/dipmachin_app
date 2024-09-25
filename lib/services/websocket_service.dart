@@ -1,6 +1,8 @@
 
 import 'dart:developer' as developer;
+import 'package:dipmachine/services/alt_mdns_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
 //import 'package:web_socket_channel/status.dart'as status;
 
 class WebsocketService {
@@ -8,13 +10,23 @@ class WebsocketService {
   WebSocketChannel? channel;
   int attempts = 0;
 
+  AltMdnsService service = AltMdnsService();
+
   Future<void>  start() async {
     try {
-    
-    //TODO:change the uri with ws://DipMachine.local/ws when connecting with actual machine.
-    channel = WebSocketChannel.connect(Uri.parse('ws://dipmachine._http._tcp.local:8000/ws'));
 
-    //TODO: while using dummy server, use local ip of the machine hosting the dummy server
+    await service.findDipMachineService();
+
+    await Future.delayed(const Duration(seconds: 3),() async {
+      developer.log('service.ipv4 is ${service.ipv4}');
+      if(service.ipv4.isEmpty) developer.log('service.ip4 was empty, service was not found ${service.ipv4}');
+      await service.client.stopDiscovery();
+    }); 
+
+
+    channel = WebSocketChannel.connect(Uri.parse('ws://${service.ipv4}:8000/ws'));
+
+    //this line was used for connecting with dummy server but since it also has mdns it won't be useful
     //channel = WebSocketChannel.connect(Uri.parse('ws://192.168.1.2:8000/ws'));
 
       await channel!.ready.then((_){
