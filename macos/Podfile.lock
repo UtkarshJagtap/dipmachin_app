@@ -2,27 +2,27 @@ PODS:
   - connectivity_plus (0.0.1):
     - Flutter
     - FlutterMacOS
-  - FlutterMacOS (1.0.0)
-  - nsd_macos (0.0.1):
+  - flutter_nsd (0.0.1):
     - FlutterMacOS
+  - FlutterMacOS (1.0.0)
 
 DEPENDENCIES:
   - connectivity_plus (from `Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin`)
+  - flutter_nsd (from `Flutter/ephemeral/.symlinks/plugins/flutter_nsd/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - nsd_macos (from `Flutter/ephemeral/.symlinks/plugins/nsd_macos/macos`)
 
 EXTERNAL SOURCES:
   connectivity_plus:
     :path: Flutter/ephemeral/.symlinks/plugins/connectivity_plus/darwin
+  flutter_nsd:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_nsd/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  nsd_macos:
-    :path: Flutter/ephemeral/.symlinks/plugins/nsd_macos/macos
 
 SPEC CHECKSUMS:
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
+  flutter_nsd: 60e24f98ea47106c4f82e24d7f0fab78b3fbe8df
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  nsd_macos: 1a38a38a33adbb396b4c6f303bc076073514cadc
 
 PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367
 

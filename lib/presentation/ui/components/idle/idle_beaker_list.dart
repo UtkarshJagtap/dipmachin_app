@@ -264,7 +264,7 @@ class ExpandedCardView extends StatelessWidget {
                                   value: context.watch<MachineDataProvider>().beakerRPM(index).toDouble(),
                                   max: 600,
                                   min: 0,
-                                  divisions: 6,
+                                  divisions: 12,
                                   onChanged:(value){
                                    
                                     context.read<MachineDataProvider>().rpm(index, value.toInt());

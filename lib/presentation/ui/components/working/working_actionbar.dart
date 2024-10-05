@@ -302,7 +302,7 @@ class WorkingABAbort2 extends StatelessWidget {
             top: 8,
             child: Padding(
               padding: const EdgeInsets.only( left: 12.0),
-              child: Text('Are you sure you want to abort \nthe ncurrent experiment?', 
+              child: Text('Are you sure you want to abort \nthe current experiment?', 
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(color:Colors.white),),
             ),
           ),

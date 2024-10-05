@@ -81,14 +81,15 @@ class WorkingViewListCard extends StatelessWidget {
               ), 
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: Container(
-                height: 8,
-                width: 8,
-                decoration: BoxDecoration( 
-                  color: context.watch<MachineDataProvider>().beakerActive(index) ?? false ? Colors.green : Colors.transparent,
-                  shape: BoxShape.circle,
-                  ),
-                )
+              child: WorkingStatusIndicator(index: index,),
+              // child: Container(
+              //   height: 8,
+              //   width: 8,
+              //   decoration: BoxDecoration( 
+              //     color: context.watch<MachineDataProvider>().beakerActive(index) ?? false ? Colors.green : Colors.transparent,
+              //     shape: BoxShape.circle,
+              //     ),
+              //   )
               )
           ],
         ),
@@ -150,5 +151,69 @@ class WorkingInfoCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class WorkingStatusIndicator extends StatefulWidget {
+   const WorkingStatusIndicator({
+    super.key,
+    required this.index,
+  });
+
+ final int index;
+
+  @override
+  State<WorkingStatusIndicator> createState() => _WorkingStatusIndicatorState();
+}
+
+class _WorkingStatusIndicatorState extends State<WorkingStatusIndicator> with SingleTickerProviderStateMixin{
+
+  late AnimationController _controller; 
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+      );
+
+    _animation = Tween<double>(begin: 0.0, end: 2.0).animate(_controller)
+        ..addListener((){
+          setState(() {
+            
+          });
+        });
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 6,
+      width: 6,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: context.watch<MachineDataProvider>().beakerActive(widget.index) ?? false ? Colors.green : Colors.transparent,
+        boxShadow: [
+          BoxShadow(
+           color: context.watch<MachineDataProvider>().beakerActive(widget.index) ?? false ? Colors.green : Colors.transparent,
+           blurRadius: 4,
+           spreadRadius: _animation.value,
+           blurStyle: BlurStyle.normal,
+          )],
+        ),
+      );
   }
 }
